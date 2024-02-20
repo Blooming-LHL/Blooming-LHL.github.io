@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>一步解决VSCode的Remote-ssh插件连接失败问题 | LHL</title><meta name="author" content="Liang Henglong"><meta name="copyright" content="Liang Henglong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="【VSCode】Remote-ssh插件连接失败问题问题背景介绍​	Remote-ssh插件是每一个使用VSCode的朋友都会安装的必备插件，借助这个插件，我们能方便快捷的连接远程服务器。但是有时候会碰到连接失败的问题（没错，又要折腾了，计算机翻脸比翻书还快😂），此时提示错误Error: XHR failed。 ​	Remote-ssh插件的功能比一般的ssh远程连接功能更为强大，这是因为当我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一步解决VSCode的Remote-ssh插件连接失败问题">
+<meta property="og:url" content="https://blooming-lhl.github.io/2024/02/20/%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="LHL">
+<meta property="og:description" content="【VSCode】Remote-ssh插件连接失败问题问题背景介绍​	Remote-ssh插件是每一个使用VSCode的朋友都会安装的必备插件，借助这个插件，我们能方便快捷的连接远程服务器。但是有时候会碰到连接失败的问题（没错，又要折腾了，计算机翻脸比翻书还快😂），此时提示错误Error: XHR failed。 ​	Remote-ssh插件的功能比一般的ssh远程连接功能更为强大，这是因为当我们">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blooming-lhl.github.io/img/cat.jpg">
+<meta property="article:published_time" content="2024-02-20T09:15:09.000Z">
+<meta property="article:modified_time" content="2024-02-20T09:16:38.382Z">
+<meta property="article:author" content="Liang Henglong">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blooming-lhl.github.io/img/cat.jpg"><link rel="shortcut icon" href="/img/cat.jpg"><link rel="canonical" href="https://blooming-lhl.github.io/2024/02/20/%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一步解决VSCode的Remote-ssh插件连接失败问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-20 17:16:38'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss_ground.css"><meta name="generator" content="Hexo 7.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/cat.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="LHL"><span class="site-name">LHL</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">一步解决VSCode的Remote-ssh插件连接失败问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-02-20T09:15:09.000Z" title="发表于 2024-02-20 17:15:09">2024-02-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-20T09:16:38.382Z" title="更新于 2024-02-20 17:16:38">2024-02-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="一步解决VSCode的Remote-ssh插件连接失败问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="【VSCode】Remote-ssh插件连接失败问题"><a href="#【VSCode】Remote-ssh插件连接失败问题" class="headerlink" title="【VSCode】Remote-ssh插件连接失败问题"></a>【VSCode】Remote-ssh插件连接失败问题</h1><h2 id="问题背景介绍"><a href="#问题背景介绍" class="headerlink" title="问题背景介绍"></a>问题背景介绍</h2><p>​	Remote-ssh插件是每一个使用VSCode的朋友都会安装的必备插件，借助这个插件，我们能方便快捷的连接远程服务器。但是有时候会碰到连接失败的问题（没错，又要折腾了，计算机翻脸比翻书还快😂），此时提示错误<code>Error: XHR failed</code>。</p>
+<p>​	Remote-ssh插件的功能比一般的ssh远程连接功能更为强大，这是因为当我们客户端的 VSCode 连接到远程服务器后，它会自动在服务器上下载对应版本的 <code>vscode-server</code>，这个 <code>server</code> 会代劳一些基本的操作。而这个 <code>server</code> 默认会下载在 <code>~/.vscode-server/bin/&#123;commit-id&#125;/</code> 文件夹下。</p>
+<p>​	若服务器端不能运行我们客户端对应版本的<code>vscode-server</code>，则会自动下载。而当服务器网络不佳时，下载往往会超时，导致连接失败。这就是报错的原因。而事实上，即使服务器网络正常，遇到缺少<code>vscode-server</code>的情况时也有一定概率无法下载<code>vscode-server</code>，具体原因不详，可能跟VSCode自身有关。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>​	以下操作以 <strong>Mac系统</strong> 作为示例，<strong>Window系统</strong> 使用相同的办法，仅是在具体操作上有所不同</p>
+<p>​	1、获取自己VSCode的Commit-id。进入终端，输入指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">code --verson</span><br></pre></td></tr></table></figure>
+
+<p>​	输出结果如下所示：</p>
+<p><img src="/./%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/image-20240219234314735.png" alt="image-20240219234314735"></p>
+<p>​	第一行代表 VSCode 的版本号，第二行代表 VScode 的 Commit-id，第三行代表本地指令集。<strong>将第二行的一串字符记下来</strong>。</p>
+<p>​	2、手动下载 <code>vscode-server</code> 包。在浏览器上输入：<a target="_blank" rel="noopener" href="https://update.code.visualstudio.com/commit:[commit-id]/server-linux-x64/stable%EF%BC%8C%E7%94%A8%E4%B8%8A%E4%B8%80%E6%AD%A5%E8%8E%B7%E5%8F%96%E7%9A%84Commit-id%E6%9B%BF%E6%8D%A2[commit-id]%EF%BC%8C%E5%8D%B3%E5%8F%AF%E4%B8%8B%E8%BD%BD%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84%60vscode-server%60">https://update.code.visualstudio.com/commit:[commit-id]/server-linux-x64/stable，用上一步获取的Commit-id替换[commit-id]，即可下载对应版本的`vscode-server`</a> 稳定版。下载完成后我们会得到一个 <code>vscode-server-linux-x64.tar.gz</code> 。</p>
+<p>​	3、通过其他ssh远程连接的方式进入服务器的Terminal。打开终端，输入<code>ssh -p 端口号 服务器用户名@ip</code> （例如ssh -p 22 <a href="mailto:&#97;&#100;&#x6d;&#x69;&#x6e;&#x40;&#49;&#x31;&#x39;&#46;&#x32;&#48;&#46;&#x33;&#53;&#x2e;&#54;&#49;">&#97;&#100;&#x6d;&#x69;&#x6e;&#x40;&#49;&#x31;&#x39;&#46;&#x32;&#48;&#46;&#x33;&#53;&#x2e;&#54;&#49;</a>）</p>
+<p><img src="/./%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/image-20240219233831011.png" alt="image-20240219233831011"></p>
+<p>如上图所示，我已经成功进入服务器的终端了。</p>
+<p>​	然后进入 <code>~/.vscode-server/bin/&#123;commit-id&#125;/</code> 目录下，输入指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.vscode-server/bin</span><br><span class="line">cd ./abd2f3db4bdb28f9e95536dfa84d8479f1eb312d</span><br></pre></td></tr></table></figure>
+
+<p>第一条指令都是一样的，第二条指令使用的一连串字符是第一步中获取的Commit-id。最后结果如下所示：</p>
+<p><img src="/./%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/image-20240219235938352.png" alt="image-20240219235938352"></p>
+<p>​	4、将 <code>vscode-server-linux-x64.tar.gz</code> 上传到服务器 <code>~/.vscode-server/bin/&#123;commit-id&#125;/</code> 目录下并解压。这里使用scp指令传输文件，从 <code>viscose-server</code> 压缩包所在的文件夹位置进入终端，输入指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp vscode-server-linux-x64.tar.gz testuser@47.100.247.240</span><br></pre></td></tr></table></figure>
+
+<p>上述的 <code>testuser@47.100.247.240</code> 记得要换成自己的服务器地址。</p>
+<p>​	然后输入指令解压：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvzf vscode-server-linux-x64.tar.gz --strip-components 1</span><br></pre></td></tr></table></figure>
+
+<p>​	最后输入 <code>ls</code> 指令查看解压后的文件，只要包括如下文件 <code>bin  extensions  LICENSE  node  node_modules  out  package.json  product.json</code> 就大功告成了！</p>
+<p><img src="/./%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/image-20240220001045168.png" alt="image-20240220001045168"></p>
+<p>​	5、重启VSCode，重新连接。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/671718415">我只教一次！vscode remote-ssh 连接失败的基本原理和优雅的解决方案</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45654306/article/details/132047411">【VScode】Remote-SSH XHR failed无法访问远程服务器</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://blooming-lhl.github.io">Liang Henglong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blooming-lhl.github.io/2024/02/20/%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/">https://blooming-lhl.github.io/2024/02/20/%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blooming-lhl.github.io" target="_blank">LHL</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/">教程</a></div><div class="post_share"><div class="social-share" data-image="/img/cat.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/02/20/%E4%BB%80%E4%B9%88%E6%98%AF%E3%80%8C%E9%9B%AA%E7%90%83%E3%80%8D/" title="什么是「雪球」"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">什么是「雪球」</div></div></a></div><div class="next-post pull-right"><a href="/2024/01/20/%E7%BD%91%E7%BA%A2%E4%B8%8E%E8%B5%84%E6%9C%AC/" title="网红与资本"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">网红与资本</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/01/18/GitHub-Pages-Hexo-%E4%B8%AA%E4%BA%BA%E5%85%8D%E8%B4%B9%E5%8D%9A%E5%AE%A2/" title="GitHub Pages+Hexo&#x3D;个人免费博客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-18</div><div class="title">GitHub Pages+Hexo&#x3D;个人免费博客</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/cat.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Liang Henglong</div><div class="author-info__description">LHL的个人小天地，记录自己的成长</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Blooming-LHL" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90VSCode%E3%80%91Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">【VSCode】Remote-ssh插件连接失败问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">问题背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.3.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/20/%E4%BB%80%E4%B9%88%E6%98%AF%E3%80%8C%E9%9B%AA%E7%90%83%E3%80%8D/" title="什么是「雪球」">什么是「雪球」</a><time datetime="2024-02-20T09:17:26.000Z" title="发表于 2024-02-20 17:17:26">2024-02-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/20/%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/" title="一步解决VSCode的Remote-ssh插件连接失败问题">一步解决VSCode的Remote-ssh插件连接失败问题</a><time datetime="2024-02-20T09:15:09.000Z" title="发表于 2024-02-20 17:15:09">2024-02-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/20/%E7%BD%91%E7%BA%A2%E4%B8%8E%E8%B5%84%E6%9C%AC/" title="网红与资本">网红与资本</a><time datetime="2024-01-20T08:16:45.000Z" title="发表于 2024-01-20 16:16:45">2024-01-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/18/GitHub-Pages-Hexo-%E4%B8%AA%E4%BA%BA%E5%85%8D%E8%B4%B9%E5%8D%9A%E5%AE%A2/" title="GitHub Pages+Hexo=个人免费博客">GitHub Pages+Hexo=个人免费博客</a><time datetime="2024-01-18T02:33:37.000Z" title="发表于 2024-01-18 10:33:37">2024-01-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/10/2023-11-29-%E5%AE%8F%E8%A7%82%E7%BB%8F%E6%B5%8E%E5%88%86%E6%9E%90/" title="2023/11/29 宏观经济分析">2023/11/29 宏观经济分析</a><time datetime="2024-01-10T12:24:49.000Z" title="发表于 2024-01-10 20:24:49">2024-01-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Liang Henglong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
