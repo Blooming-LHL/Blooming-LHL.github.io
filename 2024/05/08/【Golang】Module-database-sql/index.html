@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【Golang】Module:database/sql | LHL</title><meta name="author" content="Liang Henglong"><meta name="copyright" content="Liang Henglong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Module:database&#x2F;sql简介：​	database&#x2F;sql 是 Go 语言的标准库之一，它提供了一种通用的接口来与 SQL 数据库进行交互。 数据库：从连接到关闭1、打开数据库​	database&#x2F;sql 中有一个基本的连接池（basic connection pool）。默认情况下，连接数量没有限制。如果你尝试同时做很多事情，你可以创建任意数量的连接。这可能会导致数据库返">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Golang】Module:database&#x2F;sql">
+<meta property="og:url" content="https://blooming-lhl.github.io/2024/05/08/%E3%80%90Golang%E3%80%91Module-database-sql/index.html">
+<meta property="og:site_name" content="LHL">
+<meta property="og:description" content="Module:database&#x2F;sql简介：​	database&#x2F;sql 是 Go 语言的标准库之一，它提供了一种通用的接口来与 SQL 数据库进行交互。 数据库：从连接到关闭1、打开数据库​	database&#x2F;sql 中有一个基本的连接池（basic connection pool）。默认情况下，连接数量没有限制。如果你尝试同时做很多事情，你可以创建任意数量的连接。这可能会导致数据库返">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blooming-lhl.github.io/img/cat.jpg">
+<meta property="article:published_time" content="2024-05-08T14:03:16.000Z">
+<meta property="article:modified_time" content="2024-05-08T14:04:27.949Z">
+<meta property="article:author" content="Liang Henglong">
+<meta property="article:tag" content="Golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blooming-lhl.github.io/img/cat.jpg"><link rel="shortcut icon" href="/img/cat.jpg"><link rel="canonical" href="https://blooming-lhl.github.io/2024/05/08/%E3%80%90Golang%E3%80%91Module-database-sql/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【Golang】Module:database/sql',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-08 22:04:27'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss_ground.css"><meta name="generator" content="Hexo 7.0.0"></head><body><!-- 加载动画：巫师施法--><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="wizard-scene"><div class="wizard-objects"><div class="wizard-square"></div><div class="wizard-circle"></div><div class="wizard-triangle"></div></div><div class="wizard"><div class="wizard-body"></div><div class="wizard-right-arm"><div class="wizard-right-hand"></div></div><div class="wizard-left-arm"><div class="wizard-left-hand"></div></div><div class="wizard-head"><div class="wizard-beard"></div><div class="wizard-face"><div class="wizard-adds"></div></div><div class="wizard-hat"><div class="wizard-hat-of-the-hat"></div><div class="wizard-four-point-star --first"></div><div class="wizard-four-point-star --second"></div><div class="wizard-four-point-star --third"></div></div></div></div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/cat.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="LHL"><span class="site-name">LHL</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【Golang】Module:database/sql</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-08T14:03:16.000Z" title="发表于 2024-05-08 22:03:16">2024-05-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-08T14:04:27.949Z" title="更新于 2024-05-08 22:04:27">2024-05-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【Golang】Module:database/sql"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Module-database-sql"><a href="#Module-database-sql" class="headerlink" title="Module:database&#x2F;sql"></a>Module:database&#x2F;sql</h1><h2 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h2><p>​	<code>database/sql</code> 是 Go 语言的标准库之一，它提供了一种通用的接口来与 SQL 数据库进行交互。</p>
+<h2 id="数据库：从连接到关闭"><a href="#数据库：从连接到关闭" class="headerlink" title="数据库：从连接到关闭"></a>数据库：从连接到关闭</h2><h3 id="1、打开数据库"><a href="#1、打开数据库" class="headerlink" title="1、打开数据库"></a>1、打开数据库</h3><p>​	<code>database/sql</code> 中有一个基本的连接池（basic connection pool）。默认情况下，连接数量没有限制。如果你尝试同时做很多事情，你可以创建任意数量的连接。这可能会导致数据库返回错误，例如“连接太多”。</p>
+<p>​	<code>sql.DB</code>代表一个数据库连接池实例（而非单个数据库连接）</p>
+<p>​	（1）要创建 <code>sql.DB</code> ，请使用 <code>sql.Open()</code> 。这将返回一个 <code>*sql.DB</code> ：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	db, err := sql.Open(<span class="string">&quot;mysql&quot;</span>,</span><br><span class="line">		<span class="string">&quot;user:password@tcp(127.0.0.1:3306)/hello&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">// 在函数返回后释放db资源，保证 sql.DB 的生存期不超过main函数的作用域</span></span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​	其中：</p>
+<p>​	<code>sql.Open</code> 的第一个参数是驱动程序名称，”mysql”指的是MySQL数据库</p>
+<p>​	第二个参数是特定于驱动程序的语法，它告诉驱动程序如何访问底层的XML（XML 不是一种编程语言，而是一种数据描述语言，<strong>也就是以特定的格式表示数据</strong>）。</p>
+<p>​	在上述代码中，<code>&quot;user:password@tcp(127.0.0.1:3306)/hello&quot;</code>指的是<code>&quot;[用户名]:[密码]@tcp[数据库地址：端口]/[数据库名称]&quot;</code>	</p>
+<p>​	（2）⚠️<code>sql.Open()</code> 不会建立到数据库的任何连接，也不会验证驱动程序连接参数是否正确。相反，它只是抽象数据库（database abstraction）供以后使用。如果你想立即检查数据库是否可用和可访问，请使用 <code>db.Ping()</code> 来执行此操作，并记住检查错误：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">err = db.Ping()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	<span class="comment">// do something here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、获取数据库中的数据"><a href="#2、获取数据库中的数据" class="headerlink" title="2、获取数据库中的数据"></a>2、获取数据库中的数据</h3><p>​	举个例子🌰：我想在 <code>users</code> 表中查询 <code>id</code> 为1的用户，并打印出用户的 <code>id</code> 和 <code>name</code> 。 </p>
+<p>以下是代码实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义了两个变量，id 和 name，用于存储从数据库查询结果中获取的数据。</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	id <span class="type">int</span></span><br><span class="line">	name <span class="type">string</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">// 将查询发送到数据库</span></span><br><span class="line"><span class="comment">// 查询结果存储在 rows 中，如果查询过程中出现错误，错误信息会被存储在 err 中。</span></span><br><span class="line">rows, err := db.Query(<span class="string">&quot;select id, name from users where id = ?&quot;</span>, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 在函数返回时关闭 rows，释放相关资源。</span></span><br><span class="line"><span class="keyword">defer</span> rows.Close()</span><br><span class="line"><span class="comment">// 遍历查询结果。</span></span><br><span class="line"><span class="comment">// rows.Next() 会将 rows 的内部指针移动到下一行，如果还有更多的行，它会返回 true，否则返回 false。</span></span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">  <span class="comment">// 将当前行的数据读取到 id 和 name 变量中。</span></span><br><span class="line">	err := rows.Scan(&amp;id, &amp;name)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">// 将 id 和 name 的值打印到日志中</span></span><br><span class="line">	log.Println(id, name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 检查在遍历查询结果过程中是否出现错误。</span></span><br><span class="line">err = rows.Err()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!NOTE]</p>
+<p>​	（1）如果使用 <code>rows.Next()</code> 遍历所有行，当所有的行都被读取完毕后，再次调用 <code>rows.Next()</code> 会返回 <code>false</code>，并且内部会遇到一个 <strong>EOF（End Of File）</strong>错误，表示没有更多的数据可以读取了。同时程序会自动调用<code>rows.Close()</code>来释放资源。</p>
+<p>​	但是如果由于某种原因你退出了这个循环，那么 <code>rows</code> 不会关闭，连接仍然是打开的，此时需要我们自行关闭。(如果 <code>rows.Next()</code> 由于错误而返回false，则会自动关闭）</p>
+<p>​	<strong>因此每次我们对数据库进行操作的时候，最好保持了一个良好的习惯：每次操作后，显式调用<code>rows.Close()</code></strong></p>
+<p>​	（2）不要在循环中使用 <code>defer</code> 。该语句在函数退出后才会被执行，所以长时间运行的函数不应该使用它。<strong>这样做的后果就是内存消耗不断积累，导致内存占用异常高</strong>。</p>
+</blockquote>
+<p>​	❗️上面的代码也有一个问题，每次查询都需要重新写一个查询语句，太麻烦了😭。所以有没有一个方法可以重用我们之前已经写过的查询语句？下面的代码提供了一个思路：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 预处理一个 SQL 查询语句，预处理是指将 SQL 语句模板和参数分开</span></span><br><span class="line">stmt, err := db.Prepare(<span class="string">&quot;select id, name from users where id = ?&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> stmt.Close()</span><br><span class="line"><span class="comment">// 执行预处理的 SQL 查询语句，并将参数 1 传入其中</span></span><br><span class="line">rows, err := stmt.Query(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> rows.Close()</span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> err = rows.Err(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、修改数据库中的数据"><a href="#3、修改数据库中的数据" class="headerlink" title="3、修改数据库中的数据"></a>3、修改数据库中的数据</h3><p>修改数据的操作包括；插入数据、更新数据、删除数据等等</p>
+<p>​	举个例子🌰：我想往数据库中插入一条数据：用户名为“Dolly”的数据</p>
+<p>以下是代码实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 预处理一个 SQL 插入语句</span></span><br><span class="line">stmt, err := db.Prepare(<span class="string">&quot;INSERT INTO users(name) VALUES(?)&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">defer</span> stmt.Close()</span><br><span class="line"><span class="comment">// 执行插入语句</span></span><br><span class="line"><span class="comment">// 执行该语句会产生一个 sql.Result ，它提供对语句元数据的访问：最后插入的ID和受影响的行数。</span></span><br><span class="line">res, err := stmt.Exec(<span class="string">&quot;Dolly&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 最后插入的ID</span></span><br><span class="line">lastId, err := res.LastInsertId()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 受影响的行数</span></span><br><span class="line">rowCnt, err := res.RowsAffected()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line">log.Printf(<span class="string">&quot;ID = %d, affected = %d\n&quot;</span>, lastId, rowCnt)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、批量操作数据库（包括查询、修改）"><a href="#4、批量操作数据库（包括查询、修改）" class="headerlink" title="4、批量操作数据库（包括查询、修改）"></a>4、批量操作数据库（包括查询、修改）</h3><p>上述的方法都是对数据库进行一次查询操作或者修改操作，现实生产活动中，往往涉及对数据库的大批量的操作，而不只是两三次操作。<strong>此时我们需要将这些操作整合为一次事务（transaction），也就是把对数据库的操作打包。</strong>这些操作作为一个执行单元，要么全部成功，要么全部失败。</p>
+<p>​	举个例子🌰：我想做两次插入操作，插入两条数据：用户名为“Alice”和“Bob”的数据</p>
+<p>以下是代码实现：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开始一个新的transaction</span></span><br><span class="line">tx, err := db.Begin()</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 插入数据</span></span><br><span class="line">_, err = tx.Exec(<span class="string">&quot;INSERT INTO users (name) VALUES (?)&quot;</span>, <span class="string">&quot;Alice&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    tx.Rollback() <span class="comment">// 如果插入操作失败，回滚事务</span></span><br><span class="line">    log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 插入数据</span></span><br><span class="line">_, err = tx.Exec(<span class="string">&quot;INSERT INTO users (name) VALUES (?)&quot;</span>, <span class="string">&quot;Bob&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    tx.Rollback() <span class="comment">// 如果插入操作失败，回滚事务</span></span><br><span class="line">    log.Fatal(err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">err = tx.Commit() <span class="comment">// 如果所有操作都成功，提交事务</span></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    log.Fatal(err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>[!NOTE]</p>
+<p>​	在transaction中使用<code>db.Prepare</code>需要谨慎</p>
+</blockquote>
+<h3 id="5、其他情况"><a href="#5、其他情况" class="headerlink" title="5、其他情况"></a>5、其他情况</h3><p>​	（1）数据库中某条数据的某个值为空，比如<code>username:Alice, telephone:null</code>，遇到这种情况可以使用下述代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// COALESCE 是一个 SQL 函数，如果 other_field 是 NULL，那么就会返回空字符串 &#x27;&#x27;，以避免在go语言的代码中处理空值</span></span><br><span class="line">rows, err := db.Query(<span class="string">`</span></span><br><span class="line"><span class="string">	SELECT</span></span><br><span class="line"><span class="string">		name,</span></span><br><span class="line"><span class="string">		COALESCE(other_field, &#x27;&#x27;) as otherField</span></span><br><span class="line"><span class="string">	WHERE id = ?</span></span><br><span class="line"><span class="string">`</span>, <span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">	err := rows.Scan(&amp;name, &amp;otherField)</span><br><span class="line">	<span class="comment">// ..</span></span><br><span class="line">	<span class="comment">// If `other_field` was NULL, `otherField` is now an empty string. This works with other data types as well.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a target="_blank" rel="noopener" href="http://go-database-sql.org/">Go database&#x2F;sql tutorial</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://blooming-lhl.github.io">Liang Henglong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blooming-lhl.github.io/2024/05/08/%E3%80%90Golang%E3%80%91Module-database-sql/">https://blooming-lhl.github.io/2024/05/08/%E3%80%90Golang%E3%80%91Module-database-sql/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blooming-lhl.github.io" target="_blank">LHL</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Golang/">Golang</a></div><div class="post_share"><div class="social-share" data-image="/img/cat.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/04/16/%E3%80%90%E7%A4%BE%E4%BC%9A%E3%80%91%E5%8E%8B%E7%BC%A9%E7%8E%B0%E4%BB%A3%E6%80%A7/" title="【社会】压缩现代性"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【社会】压缩现代性</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/cat.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Liang Henglong</div><div class="author-info__description">LHL的个人小天地，记录自己的成长</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Blooming-LHL" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Module-database-sql"><span class="toc-number">1.</span> <span class="toc-text">Module:database&#x2F;sql</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">简介：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9A%E4%BB%8E%E8%BF%9E%E6%8E%A5%E5%88%B0%E5%85%B3%E9%97%AD"><span class="toc-number">1.2.</span> <span class="toc-text">数据库：从连接到关闭</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%89%93%E5%BC%80%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、打开数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、获取数据库中的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、修改数据库中的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%89%B9%E9%87%8F%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88%E5%8C%85%E6%8B%AC%E6%9F%A5%E8%AF%A2%E3%80%81%E4%BF%AE%E6%94%B9%EF%BC%89"><span class="toc-number">1.2.4.</span> <span class="toc-text">4、批量操作数据库（包括查询、修改）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%85%B6%E4%BB%96%E6%83%85%E5%86%B5"><span class="toc-number">1.2.5.</span> <span class="toc-text">5、其他情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.3.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/08/%E3%80%90Golang%E3%80%91Module-database-sql/" title="【Golang】Module:database/sql">【Golang】Module:database/sql</a><time datetime="2024-05-08T14:03:16.000Z" title="发表于 2024-05-08 22:03:16">2024-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/16/%E3%80%90%E7%A4%BE%E4%BC%9A%E3%80%91%E5%8E%8B%E7%BC%A9%E7%8E%B0%E4%BB%A3%E6%80%A7/" title="【社会】压缩现代性">【社会】压缩现代性</a><time datetime="2024-04-16T09:45:04.000Z" title="发表于 2024-04-16 17:45:04">2024-04-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/15/JSON%E6%96%87%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88/" title="JSON文件是什么">JSON文件是什么</a><time datetime="2024-03-15T02:57:04.000Z" title="发表于 2024-03-15 10:57:04">2024-03-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/20/%E4%BB%80%E4%B9%88%E6%98%AF%E3%80%8C%E9%9B%AA%E7%90%83%E3%80%8D/" title="什么是「雪球」">什么是「雪球」</a><time datetime="2024-02-20T09:17:26.000Z" title="发表于 2024-02-20 17:17:26">2024-02-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/20/%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/" title="一步解决VSCode的Remote-ssh插件连接失败问题">一步解决VSCode的Remote-ssh插件连接失败问题</a><time datetime="2024-02-20T09:15:09.000Z" title="发表于 2024-02-20 17:15:09">2024-02-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Liang Henglong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
