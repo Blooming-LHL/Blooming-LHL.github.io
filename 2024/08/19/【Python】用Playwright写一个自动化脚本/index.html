@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【Python】用Playwright写一个自动化脚本 | LHL</title><meta name="author" content="Liang Henglong"><meta name="copyright" content="Liang Henglong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="用Playwright写一个自动化脚本​	大家肯定听说过一些“自动化”工具，比如高铁订票系统的自动抢票工具、枪战游戏的自动锁定敌人工具等等。这些“自动化”工具很大程度上简化操作，提高效率（PS：有一些行为是违反规则的，比如游戏里自动锁定敌人工具就是游戏外挂）。而这些“自动化”工具统称为「自动化脚本」。 ​	在我们的日常工作和学习中，往往会需要「自动化脚本」帮助我们处理一些重复性强或者需要“拼手速”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】用Playwright写一个自动化脚本">
+<meta property="og:url" content="https://blooming-lhl.github.io/2024/08/19/%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="LHL">
+<meta property="og:description" content="用Playwright写一个自动化脚本​	大家肯定听说过一些“自动化”工具，比如高铁订票系统的自动抢票工具、枪战游戏的自动锁定敌人工具等等。这些“自动化”工具很大程度上简化操作，提高效率（PS：有一些行为是违反规则的，比如游戏里自动锁定敌人工具就是游戏外挂）。而这些“自动化”工具统称为「自动化脚本」。 ​	在我们的日常工作和学习中，往往会需要「自动化脚本」帮助我们处理一些重复性强或者需要“拼手速”">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blooming-lhl.github.io/img/cat.jpg">
+<meta property="article:published_time" content="2024-08-19T08:34:37.000Z">
+<meta property="article:modified_time" content="2024-08-19T08:38:31.523Z">
+<meta property="article:author" content="Liang Henglong">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blooming-lhl.github.io/img/cat.jpg"><link rel="shortcut icon" href="/img/cat.jpg"><link rel="canonical" href="https://blooming-lhl.github.io/2024/08/19/%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【Python】用Playwright写一个自动化脚本',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-19 16:38:31'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss_ground.css"><meta name="generator" content="Hexo 7.0.0"></head><body><!-- 加载动画：巫师施法--><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="wizard-scene"><div class="wizard-objects"><div class="wizard-square"></div><div class="wizard-circle"></div><div class="wizard-triangle"></div></div><div class="wizard"><div class="wizard-body"></div><div class="wizard-right-arm"><div class="wizard-right-hand"></div></div><div class="wizard-left-arm"><div class="wizard-left-hand"></div></div><div class="wizard-head"><div class="wizard-beard"></div><div class="wizard-face"><div class="wizard-adds"></div></div><div class="wizard-hat"><div class="wizard-hat-of-the-hat"></div><div class="wizard-four-point-star --first"></div><div class="wizard-four-point-star --second"></div><div class="wizard-four-point-star --third"></div></div></div></div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/cat.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="LHL"><span class="site-name">LHL</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【Python】用Playwright写一个自动化脚本</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-08-19T08:34:37.000Z" title="发表于 2024-08-19 16:34:37">2024-08-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-19T08:38:31.523Z" title="更新于 2024-08-19 16:38:31">2024-08-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【Python】用Playwright写一个自动化脚本"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="用Playwright写一个自动化脚本"><a href="#用Playwright写一个自动化脚本" class="headerlink" title="用Playwright写一个自动化脚本"></a>用Playwright写一个自动化脚本</h1><p>​	大家肯定听说过一些“自动化”工具，比如高铁订票系统的自动抢票工具、枪战游戏的自动锁定敌人工具等等。这些“自动化”工具很大程度上简化操作，提高效率（PS：有一些行为是违反规则的，比如游戏里自动锁定敌人工具就是游戏外挂）。而这些“自动化”工具统称为「自动化脚本」。</p>
+<p>​	在我们的日常工作和学习中，往往会需要「自动化脚本」帮助我们处理一些<strong>重复性强</strong>或者<strong>需要“拼手速”</strong>的任务。举个自己的例子：我是一个羽毛球爱好者，但是学校的羽毛球场地太抢手了，往往都是晚上十二点开放场地预定，不到一分钟就会被抢完，靠自己手动抢场地纯粹就是看运气和手速😂。这时候，我如果有一个能帮我自动抢场地的脚本，那问题就迎刃而解了😏。</p>
+<p>​	学会写脚本，能解决很多问题。所以今天就学一下如何用Python中的Playwright库写一个简单的自动化脚本。</p>
+<h2 id="Playwright是什么？"><a href="#Playwright是什么？" class="headerlink" title="Playwright是什么？"></a>Playwright是什么？</h2><p>​	❗️自动化脚本有很多种类型，<strong>而基于Playwright的脚本是用在浏览器上的</strong>。其他类型的自动化脚本我还没接触过，以后有机会补充吧🥹。</p>
+<p>​	Playwright是一个由微软开发的、开源的、用于在浏览器上执行Web应用程序自动化测试的框架。</p>
+<p>​	打个比方，如果说浏览器是遥控车，那么Playwright就是那个遥控器。我们通过Playwright可以控制浏览器完成各种操作，比如打开网页、填写表单、点击按钮，甚至是截图和录像。</p>
+<h2 id="如何使用Playwright？"><a href="#如何使用Playwright？" class="headerlink" title="如何使用Playwright？"></a>如何使用Playwright？</h2><h3 id="安装Playwright"><a href="#安装Playwright" class="headerlink" title="安装Playwright"></a>安装Playwright</h3><p>​	使用Playwright第一步毫无疑问就是安装Playwright库。作为Python丰富第三方库资源的一份子，Playwright支持使用<code>pip</code>命令安装。</p>
+<p>​	⚠️ 这里我默认大家都已经安装过Python，也会使用<code>pip</code>命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install playwright</span><br><span class="line">playwright install</span><br></pre></td></tr></table></figure>
+
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ol>
+<li><strong>p</strong>：playwright对象，用于访问和控制不同的浏览器实例</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = playwright.sync_api.sync_playwright().start()</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>browser</strong>：浏览器实例，可以用来启动一个新的浏览器窗口</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">browser = p.chromium.launch(headless=<span class="literal">False</span>) <span class="comment"># 启动一个chromium浏览器，且显示浏览器窗口</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>page</strong>：页面实例，代表了一个打开的标签页，你可以对它进行操作，如点击、输入等。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page = browser.new_page()</span><br></pre></td></tr></table></figure>
+
+<h3 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h3><p>​	介绍基础操作之前，我们用一个简单的例子了解一下自动化脚本需要做什么。</p>
+<p>​	假设现在我想了解一下淘宝上售卖的所有充电宝的详细信息（包括充电宝的品牌、价格、容量）。淘宝上卖充电宝的多了去了，我们手动收集信息肯定不现实。因此我需要一个「自动化脚本」帮我完成这个任务。那么这个脚本的工作流程应该包括以下几点：</p>
+<p>​	进入网页、处理登录验证程序、搜索产品、处理分页、定位需要收集的数据并抓取、数据处理和保存。</p>
+<p>​	<strong>其中</strong>：处理登录验证程序、搜索产品、定位需要收集的数据并抓取都离不开「定位网页元素」这一步，比方说脚本需要确定搜索框这个元素在哪里，然后才能输入“充电宝”三个字。而处理分页只需要设置好循环逻辑即可，数据处理和保存跟playwright无关。</p>
+<p>​	综上所述，一个「自动化脚本」的基础操作只有两种：进入网页和定位元素。</p>
+<ol>
+<li>在page上输入一个网址，并进入该网页。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">page.goto(<span class="string">&#x27;https:xxx&#x27;</span>)  <span class="comment"># 输入网址</span></span><br><span class="line">page.wait_for_load_state(state=<span class="string">&#x27;networkidle&#x27;</span>)  <span class="comment"># 确保页面完全加载并且没有任何正在进行的网络请求</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>定位网页上的某个元素。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.locator(<span class="string">&#x27;xxx&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>​	我们都知道，一个网页上存在许多元素，包括：文本元素、多媒体元素（图像、音频和视频）、交互元素（输入框、按钮）等等。我们可以通过<strong>CSS选择器</strong>来定位元素，所谓CSS（Cascading Style Sheets，层叠样式表），这是一种用于描述网页文档外观的样式语言。它用于控制 HTML 或 XML（包括各种 XML 方言如 SVG、XHTML 等）文档的视觉样式和布局。</p>
+<p>​	至于如何获取网页上某个元素的CSS选择器，可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/maggie_1212/article/details/107019228#:~:text=%EF%BC%881%EF%BC%89%E9%9A%8F%E4%BE%BF%E6%89%93%E5%BC%80%E4%B8%80%E4%B8%AA%E7%BD%91%E9%A1%B5%EF%BC%8C%E5%A6%82%20%E7%99%BE%E5%BA%A6%20%E3%80%82%20%EF%BC%882%EF%BC%89%E6%8C%89%20F12,%E8%BF%9B%E5%85%A5%E8%B0%83%E8%AF%95%E6%A8%A1%E5%BC%8F%E3%80%82%20%EF%BC%883%EF%BC%89%E7%82%B9%E5%87%BB%E5%85%83%E7%B4%A0%E9%80%89%E6%8B%A9%E6%A8%A1%E5%BC%8F%E3%80%82%20%EF%BC%884%EF%BC%89%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%EF%BC%8C%E5%A6%82%E8%BE%93%E5%85%A5%E6%A1%86%EF%BC%8C%E4%BC%9A%E7%9C%8B%E5%88%B0%E5%85%83%E7%B4%A0%E8%B0%83%E8%AF%95%E5%99%A8%E5%85%83%E7%B4%A0%E6%A1%86%E4%B8%AD%E6%89%80%E9%80%89%E5%85%83%E7%B4%A0%E9%AB%98%E4%BA%AE%E3%80%82%20%EF%BC%885%EF%BC%89%E5%8F%B3%E9%94%AE%E7%82%B9%E5%87%BB%E8%AF%A5%E5%85%83%E7%B4%A0%EF%BC%8C%E9%80%89%E6%8B%A9Copy%3ECopy%20selector%EF%BC%8C%E5%8D%B3%E5%8F%AF%E8%8E%B7%E5%BE%97%E8%AF%A5%E5%85%83%E7%B4%A0%E7%9A%84CSS%E9%80%89%E6%8B%A9%E5%99%A8%E3%80%82">如何获取指定元素的CSS选择器</a>，很简单的！</p>
+<h3 id="进阶操作"><a href="#进阶操作" class="headerlink" title="进阶操作"></a>进阶操作</h3><p>​	可以看一下<a target="_blank" rel="noopener" href="https://playwright.dev/python/docs/intro">官方文档</a>，里面提供了playwright一整套框架的详细用法。</p>
+<h2 id="根据实际需求写一个脚本"><a href="#根据实际需求写一个脚本" class="headerlink" title="根据实际需求写一个脚本"></a>根据实际需求写一个脚本</h2><p>​	<strong>真实需求：</strong>实验室一个项目需要大批量获取以太坊合约的反编译码，而dedaub这个网站可以根据输入的合约地址提供反编译码，因此我写了一个脚本来自动完成这个需求。</p>
+<p>​	❗️下述代码是简化版本，目的是为了演示playwright的使用方式</p>
+<p>​	<strong>脚本工作流程：</strong></p>
+<p>​	（1）打开dedaub网站，完成用户登陆</p>
+<p><img src="/./%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/image-20240819162419173.png" alt="image-20240819162419173"></p>
+<p>​	（2）输入合约地址，开始反编译</p>
+<p><img src="/./%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/image-20240819162843358.png" alt="image-20240819162843358"></p>
+<p>​	（3）找到反编译码，复制并保存</p>
+<p><img src="/./%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/image-20240819163007166.png" alt="image-20240819163007166"></p>
+<p>​	<strong>完整代码如下</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> playwright.sync_api <span class="keyword">import</span> sync_playwright</span><br><span class="line"><span class="keyword">import</span> time </span><br><span class="line"><span class="keyword">import</span> pyperclip</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">@description: 从反编译器网站中保存特定合约的反编译结果</span></span><br><span class="line"><span class="string">@param &#123;string&#125; address: 合约地址</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ExtractDecompiledCode</span>(<span class="params">address</span>):</span><br><span class="line">    <span class="comment"># 启动playwright进程</span></span><br><span class="line">    p = sync_playwright().start()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 启动Chromium浏览器，返回 Browser 类型对象</span></span><br><span class="line">    browser = p.chromium.launch(headless=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建新页面，返回 Page 类型对象，即页面操作对象</span></span><br><span class="line">    page = browser.new_page()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># goto 前往反编译器网站</span></span><br><span class="line">    page.goto(<span class="string">&#x27;https://app.dedaub.com/decompile?network=ethereum&#x27;</span>)</span><br><span class="line">    page.wait_for_load_state(state=<span class="string">&#x27;networkidle&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 我在这个网站上的登录账号是github账号，有双重验证需求，因此无法通过脚本自动登录</span></span><br><span class="line">    <span class="comment"># 因此我们手动在打开好的网页上登录以后再按回车键。让脚本继续执行</span></span><br><span class="line">    <span class="built_in">input</span>(<span class="string">&quot;Please login and press Enter to continue...&quot;</span>)  </span><br><span class="line"></span><br><span class="line">    <span class="comment"># 根据css选择器 找到搜索框 输入内容</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        page.locator(<span class="string">&#x27;//*[@id=&quot;global-ref&quot;]/div/div/div[2]/div/div/div/div[2]/div[1]/input&#x27;</span>).click()  <span class="comment"># 点击搜索框</span></span><br><span class="line">        page.locator(<span class="string">&#x27;//*[@id=&quot;global-ref&quot;]/div/div/div[2]/div/div/div/div[2]/div[1]/input&#x27;</span>).fill(address)  <span class="comment"># 输入数据</span></span><br><span class="line">        page.locator(<span class="string">&#x27;#decompile-button&#x27;</span>).click()  <span class="comment"># 点击开始反编译</span></span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">                </span><br><span class="line">        <span class="comment"># 找到反编译结果</span></span><br><span class="line">        page.locator(<span class="string">&#x27;//*[@id=&quot;sideBar&quot;]/div[3]/div[1]&#x27;</span>).click()  <span class="comment"># 展开Code Artifacts</span></span><br><span class="line">        selector = <span class="string">&#x27;//*[@id=&quot;sideBar&quot;]/div[3]/div[2]/div[2]/div/a&#x27;</span></span><br><span class="line">        <span class="keyword">if</span> page.locator(selector).count() == <span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;address&#125;</span> 无法反编译&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            page.locator(selector).click()  <span class="comment"># 点击decompiled链接</span></span><br><span class="line">            time.sleep(<span class="number">3</span>)</span><br><span class="line">            page.locator(<span class="string">&#x27;//*[@id=&quot;global-ref&quot;]/div/div/div[2]/div/div[2]/div[2]/div[1]/div/div[3]&#x27;</span>).click() <span class="comment"># 点击复制按钮</span></span><br><span class="line">                </span><br><span class="line">            <span class="comment"># 保存反编译结果</span></span><br><span class="line">            text = pyperclip.paste()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;反编译结果为：\n <span class="subst">&#123;text&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;address&#125;</span> 无法反编译&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关闭浏览器</span></span><br><span class="line">    browser.close()</span><br><span class="line">    <span class="comment"># 关闭 playwright driver 进程</span></span><br><span class="line">    p.stop()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    ExtractDecompiledCode(<span class="string">&#x27;0x630af1ac0ad1f807c32c1daa8ce0fcfa8ea9f716&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a target="_blank" rel="noopener" href="https://playwright.dev/python/docs/intro">Playwright for Python</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/maggie_1212/article/details/107019228#:~:text=%EF%BC%881%EF%BC%89%E9%9A%8F%E4%BE%BF%E6%89%93%E5%BC%80%E4%B8%80%E4%B8%AA%E7%BD%91%E9%A1%B5%EF%BC%8C%E5%A6%82%20%E7%99%BE%E5%BA%A6%20%E3%80%82%20%EF%BC%882%EF%BC%89%E6%8C%89%20F12,%E8%BF%9B%E5%85%A5%E8%B0%83%E8%AF%95%E6%A8%A1%E5%BC%8F%E3%80%82%20%EF%BC%883%EF%BC%89%E7%82%B9%E5%87%BB%E5%85%83%E7%B4%A0%E9%80%89%E6%8B%A9%E6%A8%A1%E5%BC%8F%E3%80%82%20%EF%BC%884%EF%BC%89%E9%80%89%E6%8B%A9%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%EF%BC%8C%E5%A6%82%E8%BE%93%E5%85%A5%E6%A1%86%EF%BC%8C%E4%BC%9A%E7%9C%8B%E5%88%B0%E5%85%83%E7%B4%A0%E8%B0%83%E8%AF%95%E5%99%A8%E5%85%83%E7%B4%A0%E6%A1%86%E4%B8%AD%E6%89%80%E9%80%89%E5%85%83%E7%B4%A0%E9%AB%98%E4%BA%AE%E3%80%82%20%EF%BC%885%EF%BC%89%E5%8F%B3%E9%94%AE%E7%82%B9%E5%87%BB%E8%AF%A5%E5%85%83%E7%B4%A0%EF%BC%8C%E9%80%89%E6%8B%A9Copy%3ECopy%20selector%EF%BC%8C%E5%8D%B3%E5%8F%AF%E8%8E%B7%E5%BE%97%E8%AF%A5%E5%85%83%E7%B4%A0%E7%9A%84CSS%E9%80%89%E6%8B%A9%E5%99%A8%E3%80%82">如何获取指定元素的CSS选择器</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://blog.csdn.net/AI_Green/article/details/137468143">一个顶级的Python自动化库：Playwright，让浏览器听从你的指挥！</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://blooming-lhl.github.io">Liang Henglong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blooming-lhl.github.io/2024/08/19/%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/">https://blooming-lhl.github.io/2024/08/19/%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blooming-lhl.github.io" target="_blank">LHL</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/">教程</a></div><div class="post_share"><div class="social-share" data-image="/img/cat.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/07/10/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91%E5%B0%8F%E7%99%BD%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git/" title="【教程】小白教你如何使用Git"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【教程】小白教你如何使用Git</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/01/18/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91GitHubPages+Hexo=%E4%B8%AA%E4%BA%BA%E5%85%8D%E8%B4%B9%E5%8D%9A%E5%AE%A2/" title="GitHub Pages+Hexo&#x3D;个人免费博客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-18</div><div class="title">GitHub Pages+Hexo&#x3D;个人免费博客</div></div></a></div><div><a href="/2024/03/15/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91JSON%E6%96%87%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88/" title="JSON文件是什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-15</div><div class="title">JSON文件是什么</div></div></a></div><div><a href="/2024/02/20/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%86%B3VSCode%E7%9A%84Remote-ssh%E6%8F%92%E4%BB%B6%E8%BF%9E%E6%8E%A5%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/" title="一步解决VSCode的Remote-ssh插件连接失败问题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-20</div><div class="title">一步解决VSCode的Remote-ssh插件连接失败问题</div></div></a></div><div><a href="/2024/07/10/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91%E5%B0%8F%E7%99%BD%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git/" title="【教程】小白教你如何使用Git"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-10</div><div class="title">【教程】小白教你如何使用Git</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/cat.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Liang Henglong</div><div class="author-info__description">LHL的个人小天地，记录自己的成长</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Blooming-LHL" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">用Playwright写一个自动化脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Playwright%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">Playwright是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Playwright%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">如何使用Playwright？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Playwright"><span class="toc-number">1.2.1.</span> <span class="toc-text">安装Playwright</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.2.2.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.3.</span> <span class="toc-text">基础操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.4.</span> <span class="toc-text">进阶操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AE%E5%AE%9E%E9%99%85%E9%9C%80%E6%B1%82%E5%86%99%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC"><span class="toc-number">1.3.</span> <span class="toc-text">根据实际需求写一个脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.4.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/19/%E3%80%90Python%E3%80%91%E7%94%A8Playwright%E5%86%99%E4%B8%80%E4%B8%AA%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC/" title="【Python】用Playwright写一个自动化脚本">【Python】用Playwright写一个自动化脚本</a><time datetime="2024-08-19T08:34:37.000Z" title="发表于 2024-08-19 16:34:37">2024-08-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/10/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91%E5%B0%8F%E7%99%BD%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Git/" title="【教程】小白教你如何使用Git">【教程】小白教你如何使用Git</a><time datetime="2024-07-10T13:51:30.000Z" title="发表于 2024-07-10 21:51:30">2024-07-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/08/%E3%80%90Golang%E3%80%91Module-database-sql/" title="【Golang】Module:database/sql">【Golang】Module:database/sql</a><time datetime="2024-05-08T14:03:16.000Z" title="发表于 2024-05-08 22:03:16">2024-05-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/16/%E3%80%90%E7%A4%BE%E4%BC%9A%E3%80%91%E5%8E%8B%E7%BC%A9%E7%8E%B0%E4%BB%A3%E6%80%A7/" title="【社会】压缩现代性">【社会】压缩现代性</a><time datetime="2024-04-16T09:45:04.000Z" title="发表于 2024-04-16 17:45:04">2024-04-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/15/%E3%80%90%E6%95%99%E7%A8%8B%E3%80%91JSON%E6%96%87%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88/" title="JSON文件是什么">JSON文件是什么</a><time datetime="2024-03-15T02:57:04.000Z" title="发表于 2024-03-15 10:57:04">2024-03-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Liang Henglong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
